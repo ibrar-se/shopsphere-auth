@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
-@Slf4j // 1. Added Logging
+@Slf4j
 @RestController
-@RequestMapping("/auth") // 2. Fixed mapping to match SecurityConfig
+// FIX: Added /api prefix so it matches the Gateway routing and Security Config exactly!
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -35,7 +36,6 @@ public class AuthController {
 
         ApiResponse<AuthResponse> apiResponse = ApiResponse.<AuthResponse>builder()
                 .success(true)
-                // 3. Dynamically using the message from the service
                 .message(response.getMessage())
                 .data(response)
                 .timestamp(LocalDateTime.now())
@@ -56,7 +56,6 @@ public class AuthController {
 
         ApiResponse<AuthResponse> apiResponse = ApiResponse.<AuthResponse>builder()
                 .success(true)
-                // 3. Dynamically using the message from the service
                 .message(response.getMessage())
                 .data(response)
                 .timestamp(LocalDateTime.now())

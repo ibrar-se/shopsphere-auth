@@ -16,7 +16,7 @@ WORKDIR /app
 # Copy the built jar from the previous stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose the standard port for the Auth Service (Usually 8081)
+# Auth service port (from your application.yml)
 EXPOSE 8081
 
 # Run the application

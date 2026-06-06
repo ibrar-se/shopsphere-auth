@@ -30,7 +30,6 @@ public class SecurityConfig {
     // =========================
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -39,12 +38,9 @@ public class SecurityConfig {
     // =========================
     @Bean
     public AuthenticationProvider authenticationProvider() {
-
-        DaoAuthenticationProvider authProvider =
-                new DaoAuthenticationProvider(userDetailsService);
-
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
@@ -55,9 +51,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
 
         try {
-
             http
-
                     // Disable CSRF
                     .csrf(AbstractHttpConfigurer::disable)
 
@@ -70,8 +64,9 @@ public class SecurityConfig {
 
                     // Route Authorization
                     .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/auth/**").permitAll()
-                            .requestMatchers("/public/**").permitAll()
+                            // FIX: These now correctly match your /api/auth controller endpoints!
+                            .requestMatchers("/api/auth/**").permitAll()
+                            .requestMatchers("/api/public/**").permitAll()
                             .anyRequest().authenticated()
                     )
 
@@ -87,7 +82,6 @@ public class SecurityConfig {
             return http.build();
 
         } catch (Exception e) {
-
             throw new RuntimeException(e);
         }
     }
